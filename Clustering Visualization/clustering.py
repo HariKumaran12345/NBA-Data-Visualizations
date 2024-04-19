@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import seaborn as sns
+import matplotlib
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
@@ -9,6 +10,7 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.metrics import silhouette_score
 
+matplotlib.use('agg')
 def cluster(year):
     data = pd.read_csv('../dataset/modern_RAPTOR_by_team.csv')
     year = int(year)
@@ -41,26 +43,30 @@ def cluster(year):
     pca = PCA(n_components=2)
     pca_data = pca.fit_transform(scaled_data)
 
+    pca_plot_path = 'static/pca_plot.png'
     plt.figure(figsize=(8, 6))
     sns.scatterplot(x=pca_data[:, 0], y=pca_data[:, 1], hue=clusters, palette='viridis')
     plt.title('PCA Visualization of Clusters')
     plt.xlabel('Principal Component 1')
     plt.ylabel('Principal Component 2')
     plt.legend(title='Cluster')
-    plt.show()
+    plt.savefig(pca_plot_path)
+    plt.close()
 
         # Perform t-SNE dimensionality reduction
     tsne = TSNE(n_components=2, random_state=42)
     tsne_data = tsne.fit_transform(scaled_data)
 
     # Plot t-SNE visualization with cluster labels
+    tsne_plot_path = 'static/tsne_plot.png'
     plt.figure(figsize=(8, 6))
     sns.scatterplot(x=tsne_data[:, 0], y=tsne_data[:, 1], hue=clusters, palette='viridis', legend='full')
     plt.title('t-SNE Visualization of Clusters')
     plt.xlabel('t-SNE Component 1')
     plt.ylabel('t-SNE Component 2')
     plt.legend(title='Cluster')
-    plt.show()
+    plt.savefig(tsne_plot_path)
+    plt.close()
 
     cluster_names = assign_cluster_names(cluster_stats)
 
@@ -69,6 +75,8 @@ def cluster(year):
 
     # Print cluster statistics along with assigned names
     print(cluster_stats)
+    players_in_clusters_grouped = get_players_in_clusters_grouped_by_team(data)
+    return pca_plot_path, tsne_plot_path, cluster_stats, players_in_clusters_grouped
 
 
 
@@ -107,6 +115,7 @@ def get_players_in_clusters_grouped_by_team(data):
     players_in_clusters = {}
     for cluster_label in data['cluster'].unique():
         players_in_clusters[cluster_label] = data[data['cluster'] == cluster_label].groupby('team')['player_name'].apply(list).to_dict()
+    
     return players_in_clusters
 
 def get_player_cluster(player_name, data, cluster_stats):
