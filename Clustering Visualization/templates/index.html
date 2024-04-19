@@ -44,11 +44,51 @@
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .navbar a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .content {
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <a href="#" class="active">Player Clustering</a>
+        <a href="#">Two</a>
+        <a href="#">Three</a>
+        <!-- Add more tabs as needed -->
+    </div>
+
+
     <div class="container">
         <h1>Player Clustering</h1>
+        <div style="text-align: center;">
+            <p>Select a year to cluster NBA players based on their play-style.</p>
+        </div>
         <form action="/cluster" method="post">
             <label for="year">Select a Year:</label>
             <select id="year" name="year">
