@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Performance Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h3>
+        Select your team here:
+        <select id="teamSelector" onchange="updateChart()">
+            {% for team in teams %}
+            <option value="{{ team }}">{{ team }}</option>
+            {% endfor %}
+        </select>
+    </h3>
+    <div id="chart"></div>
+
+    <script>
+    function updateChart() {
+        var team = document.getElementById('teamSelector').value;
+        console.log(team);
+        $.ajax({
+            url: '/data',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({'team': team}),
+            dataType: 'json',
+            success: function(data) {
+                Plotly.newPlot('chart', data, {
+                    title: 'Player Predator Total Scores by Season'
+                });
+            },
+            error: function(error) {
+                console.error("Error: ", error);
+            }
+        });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        updateChart();  // Initial chart display
+    });
+    </script>
+</body>
+</html>
