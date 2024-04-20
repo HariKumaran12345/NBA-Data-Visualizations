@@ -8,3 +8,11 @@ The resulting output will show you the overarching makes and misses plotted with
 
 shotMapByTeam is similar except instead of the player name you can put a team name and it will show the shot maps for players who have played a certain number of games
 and a certain number of points. An example command line instruction is **python shotMapByTeam Los Angeles Lakers 2023-24**
+
+## Player Score Prediction Instructions
+
+1) Download all the required files
+2) Navigate to Player Score Prediction directory on terminal/command line
+3) run 'python app.py' - Make sure you have the right version of python (3.8 or higher and have flask, pandas, numpy installed)
+4) Copy the URL generated in the terminal/command line and paste it in a browser (http://127.0.0.1:5000/)
+5) Thats all!
