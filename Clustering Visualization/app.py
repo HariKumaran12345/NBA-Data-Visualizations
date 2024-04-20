@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from clustering import cluster
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,6 +14,9 @@ from nba_api.stats.endpoints import shotchartdetail, playercareerstats, commonte
 from shotMapByTeam import getPlayerShotChartDetail, get_contributing_players, create_shot_chart
 
 matplotlib.use('agg')
+
+#code for player score prediction
+df = pd.read_csv('../dataset/complete_dataset.csv')
 
 @app.route('/')
 def index():
@@ -67,8 +70,66 @@ def shot_chart():
     plt.savefig('static/shot_chart.png')
     plt.close()  # Close the plot to free up resources
     
-    return render_template('shot_chart.html', team_name=team_name, season_id=season_id)
+    return render_template('shot_chart.html', team_name=team_name, season_id=season_id, active_tab = 'maps')
 
+@app.route('/player-score-prediction')
+def score_prediction():
+    teams = df['team'].dropna().unique().tolist()  # Extract unique teams and convert to list
+    return render_template('scorePrediction.html', teams=teams, active_tab ='player_score_prediction')
+
+@app.route('/data', methods=['POST'])
+def data():
+    print(request.json)
+    if not request.json or 'team' not in request.json:
+        return jsonify({'error': 'Missing or malformed request data'}), 400
+    team = request.json['team']
+    filtered_df = df[df['team'] == team]
+       # Count the number of entries per player and select the top 10 players with the most entries
+    top_players_counts = filtered_df['player_name'].value_counts().nlargest(10)
+    top_players = filtered_df[filtered_df['player_name'].isin(top_players_counts.index)]
+
+    data = []
+    for player in top_players['player_name'].unique():
+        player_data = top_players[top_players['player_name'] == player]
+        player_data = player_data.loc[player_data.groupby('season')['predator_total'].idxmax()]
+        player_data_sorted = player_data.sort_values(by='season')  # Sort data by season
+        # trace = {
+        #     'x': player_data_sorted['season'].tolist(),
+        #     'y': player_data_sorted['predator_total'].tolist(),
+        #     'type': 'scatter',
+        #     'mode': 'lines+markers',
+        #     'name': player,
+        #     'line': {'dash': np.where(player_data_sorted['season'].isin(['2023', '2024']), 'dash', 'solid').tolist()}
+        # }
+        # data.append(trace)
+
+        actual_data = player_data_sorted[player_data_sorted['season'] <= 2022]
+        predicted_data = player_data_sorted[player_data_sorted['season'] >= 2022]
+
+        # Trace for actual data
+        trace_actual = {
+            'x': actual_data['season'].tolist(),
+            'y': actual_data['predator_total'].tolist(),
+            'type': 'scatter',
+            'mode': 'lines+markers',
+            'name': player,
+            'line': {'dash': 'solid'}
+        }
+        data.append(trace_actual)
+
+        # Trace for predicted data
+        if not predicted_data.empty:  # Check if there is any predicted data
+            trace_predicted = {
+                'x': predicted_data['season'].tolist(),
+                'y': predicted_data['predator_total'].tolist(),
+                'type': 'scatter',
+                'mode': 'lines+markers',
+                'name': player + ' (Predicted)',
+                'line': {'dash': 'dash'},
+                'showlegend': False  # Avoid duplicate legend entries
+            }
+            data.append(trace_predicted)
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)

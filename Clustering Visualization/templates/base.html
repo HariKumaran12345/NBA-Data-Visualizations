@@ -101,7 +101,9 @@
     <div class="navbar">
         <a href="/" {% block index_active %}{% if active_tab == 'index' or active_tab == 'results'%}class="active"{% endif %}{% endblock %}>Player Clustering</a>
         <a href="/linear-regression" {% block regression_active %}{% if active_tab == 'regression' %}class="active"{% endif %}{% endblock %}>Linear Regression Predictions</a>
+        <a href="/player-score-prediction" {% block player_score_active %}{% if active_tab == 'player_score_prediction' %}class="active"{% endif %}{% endblock %}>Player Score Prediction</a>
         <a href="/shot-map-home" {% block maps_active %}{% if active_tab == 'maps' %}class="active"{% endif %}{% endblock %}>Player Shot Maps</a>
+        
         <!-- Add more tabs as needed -->
     </div>
 

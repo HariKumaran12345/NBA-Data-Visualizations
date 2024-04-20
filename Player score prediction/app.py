@@ -4,12 +4,12 @@ import numpy as np
 app = Flask(__name__)
 
 # Load your dataset
-df = pd.read_csv('complete_dataset.csv')
+df = pd.read_csv('../dataset/complete_dataset.csv')
 
 @app.route('/')
 def index():
     teams = df['team'].dropna().unique().tolist()  # Extract unique teams and convert to list
-    return render_template('index.html', teams=teams)
+    return render_template('scorePrediction.html', teams=teams)
 
 @app.route('/data', methods=['POST'])
 def data():
