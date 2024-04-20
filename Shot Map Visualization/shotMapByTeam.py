@@ -89,7 +89,7 @@ def draw_court(ax=None, color="blue", lw=1, outer_lines=False):
         ax.add_patch(element)
 
 #map for shots
-def shot_chart(data, title="", color="b", xlim=(-250, 250), ylim=(422.5, -47.5), line_color="blue",
+def create_shot_chart(data, title="", color="b", xlim=(-250, 250), ylim=(422.5, -47.5), line_color="blue",
                court_color="white", court_lw=2, outer_lines=False,
                flip_court=False, gridsize=None,
                ax=None, despine=False):
@@ -134,16 +134,17 @@ def shot_chart(data, title="", color="b", xlim=(-250, 250), ylim=(422.5, -47.5),
 
 
     return ax
-def get_contributing_players(teamName, season):
+def get_contributing_players(team_name, season):
     nbaTeams = teams.get_teams()
     team_info = next((team for team in nbaTeams if team['full_name'] == team_name), None)
     if team_info is None:
         raise ValueError(f"Team '{team_name}' not found.")
     team_id = team_info['id']
-    team_roster = commonteamroster.CommonTeamRoster(team_id=team_id, season=season_id).get_data_frames()[0]
+    team_roster = commonteamroster.CommonTeamRoster(team_id=team_id, season=season).get_data_frames()[0]
     playerIds=team_roster['PLAYER_ID'].tolist()
     filteredPlayers = []
     positions = []
+    finalPPG = []
     for id in playerIds:
         currPlayerStats = playercareerstats.PlayerCareerStats(player_id=id).get_data_frames()[0]
         currSeasonStats = currPlayerStats[currPlayerStats['SEASON_ID'] == season]
@@ -153,14 +154,15 @@ def get_contributing_players(teamName, season):
         if currSeasonStats['GP'].sum() > 41 and ppg > 5.0:
             filteredPlayers.append(players.find_player_by_id(id)['full_name'])
             positions.append(team_roster.loc[team_roster['PLAYER_ID'] == id, 'POSITION'].iloc[0])
-    return filteredPlayers, positions
+            finalPPG.append(round(ppg,1))
+    return filteredPlayers, positions, finalPPG
 
 if __name__ == "__main__":
     if len(sys.argv) >= 4:
         team_name = ' '.join(sys.argv[1:-1])
         season_id = sys.argv[-1]
 
-        roster, positions = get_contributing_players(team_name, season_id)
+        roster, positions, ppg = get_contributing_players(team_name, season_id)
         plt.rcParams['figure.figsize'] = (24, 22)  
 
         num_players = len(roster)
@@ -176,13 +178,13 @@ if __name__ == "__main__":
             player_shotchart_df, league_avg = getPlayerShotChartDetail(player_name, season_id)
             
             # Draw Court and plot Shot Chart for the player
-            axs[i].set_title(f"{player_name} ({positions[i]})", fontsize=14, pad=10) 
-            shot_chart(player_shotchart_df, title= axs[i].get_title(), ax=axs[i])
+            axs[i].set_title(f"{player_name} ({positions[i]}) - PPG: {ppg}", fontsize=14, pad=10) 
+            create_shot_chart(player_shotchart_df, title= axs[i].get_title(), ax=axs[i])
         for j in range(len(roster), rows * cols):
             axs[j].axis('off')
 
         # Adjust layout and show plot
-        fig.suptitle(f"Shot Charts for - {team_name} - Season {season_id}", fontsize=20, y=.98)  
+        fig.suptitle(f"Shot Charts for {team_name} - Season {season_id}", fontsize=20, y=.98)  
         plt.tight_layout(rect=[0, 1, 1, 0.97])  
         plt.subplots_adjust(hspace=0.5)     
         plt.show()
