@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, send_file, jsonify
 from clustering import cluster
 import matplotlib.pyplot as plt
 import numpy as np
@@ -130,6 +130,18 @@ def data():
             }
             data.append(trace_predicted)
     return jsonify(data)
+
+
+#d3 visualization
+@app.route('/moe-table')
+def visualization():
+    return render_template('moe_table.html', active_tab='moe_table')
+
+@app.route('/results-data')
+def resultsData():
+    return send_file('../dataset/results.csv', as_attachment=True)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
