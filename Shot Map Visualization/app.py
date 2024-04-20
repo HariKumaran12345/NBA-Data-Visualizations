@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import sys
+import matplotlib
 
 # Import the NBA API
 from nba_api.stats.static import teams, players
@@ -10,6 +11,7 @@ from nba_api.stats.endpoints import shotchartdetail, playercareerstats, commonte
 from shotMapByTeam import getPlayerShotChartDetail, get_contributing_players, create_shot_chart
 
 app = Flask(__name__)
+matplotlib.use('agg')
 
 # Your existing Python functions go here
 

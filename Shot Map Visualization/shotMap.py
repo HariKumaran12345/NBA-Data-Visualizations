@@ -7,12 +7,14 @@ from nba_api.stats.static import players
 from nba_api.stats.endpoints import shotchartdetail, playercareerstats
 #import matplot lib
 import matplotlib.pyplot as plt
+import matplotlib
 import seaborn as sns
 from matplotlib.patches import Circle, Rectangle, Arc, ConnectionPatch, Polygon, PathPatch
 from matplotlib.path import Path
 from matplotlib.collections import PatchCollection
 from matplotlib.colors import LinearSegmentedColormap, ListedColormap, BoundaryNorm
 
+matplotlib.use('SVG')
 def getPlayerShotChartDetail(player_name, season_id):
     # Get player information
     nba_players = players.get_players()
