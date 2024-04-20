@@ -10,7 +10,7 @@ The resulting output will show you the overarching makes and misses plotted with
 shotMapByTeam is similar except instead of the player name you can put a team name and it will show the shot maps for players who have played a certain number of games
 and a certain number of points. An example command line instruction is **python shotMapByTeam Los Angeles Lakers 2023-24**
 
-### Flash Shot Map Creations
+### Flask Shot Map Creations
 You will need Flask for this (you can run pip install Flask in your terminal).
 If you would like to use a web version you can simply run **python app.py** from within the directory, and then proceed to enter the season and team name on the local host page. Copy the URL generated in the terminal/command line and paste it in a browser (http://127.0.0.1:5000/)
 
