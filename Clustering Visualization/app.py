@@ -26,7 +26,7 @@ def cluster_route():
         # Call the cluster function with the selected year
         pca_plot_path, tsne_plot_path, cluster_stats, players_grouped = cluster(selected_year)
         # Redirect the user back to the homepage after processing the form
-        return render_template('results.html', pca_plot_path=pca_plot_path, tsne_plot_path=tsne_plot_path, cluster_stats=cluster_stats, players_grouped=players_grouped)
+        return render_template('results.html', pca_plot_path=pca_plot_path, tsne_plot_path=tsne_plot_path, cluster_stats=cluster_stats, players_grouped=players_grouped, active_tab = 'index')
 
 @app.route('/shot-map-home')
 def shot_map_home():

@@ -1,110 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Clustering</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        form {
-            text-align: center;
-        }
-        select {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        input[type="submit"] {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
+{% extends "base.html" %}
 
-        .navbar {
-            overflow: hidden;
-            background-color: #333;
-        }
+{% block title %}Player Clustering{% endblock %}
 
-        .navbar a {
-            float: left;
-            display: block;
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 20px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
+{% block index_active %}class="active"{% endblock %}
 
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
-        .navbar a.active {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .content {
-            padding: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="navbar">
-        <a href="#" class="active">Player Clustering</a>
-        <a href="#">Linear Regression Predictions</a>
-        <a href="#">Player Shot Maps</a>
-        <!-- Add more tabs as needed -->
-    </div>
-
-
-    <div class="container">
-        <h1>Player Clustering</h1>
-        <div style="text-align: center;">
-            <p>Select a year to cluster NBA players based on their play-style.</p>
-        </div>
-        <form action="/cluster" method="post">
-            <label for="year">Select a Year:</label>
-            <select id="year" name="year">
-                <option value="2014">2014</option>
-                <option value="2015">2015</option>
-                <option value="2016">2016</option>
-                <option value="2017">2017</option>
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-            </select>
-            <br><br>
-            <input type="submit" value="Cluster">
-        </form>
-    </div>
-</body>
-</html>
+{% block content %}
+<h1>Player Clustering</h1>
+<div style="text-align: center;">
+    <p>Select a year to cluster NBA players based on their play-style.</p>
+</div>
+<form action="/cluster" method="post">
+    <label for="year">Select a Year:</label>
+    <select id="year" name="year">
+        <option value="2014">2014</option>
+        <option value="2015">2015</option>
+        <option value="2016">2016</option>
+        <option value="2017">2017</option>
+        <option value="2018">2018</option>
+        <option value="2019">2019</option>
+        <option value="2020">2020</option>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+    </select>
+    <br><br>
+    <input type="submit" value="Cluster">
+</form>
+{% endblock %}
