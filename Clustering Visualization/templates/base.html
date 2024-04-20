@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Player Clustering{% endblock %}</title>
+    <style>
+        /* Your CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/" {% block index_active %}class="active"{% endblock %}>Player Clustering</a>
+        <a href="/linear-regression" {% block regression_active %}{% endblock %}>Linear Regression Predictions</a>
+        <a href="/shot-maps" {% block maps_active %}{% endblock %}>Player Shot Maps</a>
+        <!-- Add more tabs as needed -->
+    </div>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
