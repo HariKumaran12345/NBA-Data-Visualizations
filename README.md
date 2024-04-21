@@ -9,13 +9,13 @@ We've implemented Linear Regression to forecast player performance for upcoming 
 Leveraging Linear Regression on ELO data, we've achieved a 69% accuracy in binary classification (Winner/Loser). Using D3, we've created a visualization showing predicted Margin of Victory (MOV) for all possible team matchups. Additionally, users can select specific teams to focus on, enhancing usability.
 
 ### Player Clustering: 
-We've employed K-means clustering on RAPTOR scores and relevant player metrics to categorize NBA players into distinct groups based on playing styles and skill sets. The frontend presents cluster assignments, statistics, and visualizations using matplotlib, enabling users to understand player roles and team compositions better. This approach enhances traditional clustering methods by incorporating advanced performance metrics.
+We've employed K-means clustering on RAPTOR scores and relevant player metrics to categorize NBA players into distinct groups based on playing styles and skill sets. The frontend presents cluster assignments, statistics, and visualizations using matplotlib, enabling users to understand player roles and team compositions better. This approach enhances traditional clustering methods by incorporating advanced performance metrics. Casual NBA followers can use it to see whether their favorite players are more offensive, defensive, or balanced and which other players have similar play styles.
 
 ### Shot Map Visualizations: 
 We've expanded shot map visualizations to show player shot distributions on a team-by-team basis. These shot maps provide essential information in a simple format, allowing casual fans to understand offensive schemes easily. By filtering players based on game participation and scoring criteria, and utilizing the NBA API, we've constructed shot maps hosted on Flask-powered front-end templates.
 
 ## INSTALLATION
-1. Clone the repostiroy:
+1. Clone the repository:
 git clone https://github.gatech.edu/hkumaran3/CSE6242DataVis_NBA_Visualizations.git
 2. Navigate to the project directory:
 cd '.\CODE\Clustering Visualization\'
